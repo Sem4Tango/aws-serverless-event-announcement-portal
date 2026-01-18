@@ -1,4 +1,5 @@
 # aws-serverless-event-announcement-portal
+![Architecture Diagram](architecture.png)
 
 This project is a full-stack cloud application that automates business notifications using a scalable, event-driven architecture on AWS.
 
