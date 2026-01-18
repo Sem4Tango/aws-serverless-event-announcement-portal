@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Announcement Portal</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding: 50px; background-color: #f4f4f9; }
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 400px; }
+        input, textarea { width: 100%; margin: 10px 0; padding: 10px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; }
+        button { width: 100%; padding: 10px; background-color: #ff9900; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #e68a00; }
+        #status { margin-top: 15px; font-size: 0.9em; text-align: center; color: #555; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>📢 Send Announcement</h2>
+    <input type="text" id="eventName" placeholder="Event Name (e.g. Kickoff Meeting)">
+    <textarea id="eventDetails" rows="4" placeholder="Enter event details here..."></textarea>
+    <button onclick="sendAnnouncement()">Blast Notification</button>
+    <p id="status"></p>
+</div>
+
+<script>
+    async function sendAnnouncement() {
+        const url = 'https://4kx64tiqu2.execute-api.ap-south-1.amazonaws.com/announce';
+        const status = document.getElementById('status');
+        const data = {
+            event_name: document.getElementById('eventName').value,
+            details: document.getElementById('eventDetails').value
+        };
+
+        status.innerText = "Sending...";
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                status.innerText = "✅ Success! Check your email.";
+            } else {
+                status.innerText = "❌ Error: " + response.statusText;
+            }
+        } catch (error) {
+            status.innerText = "❌ Connection failed. Did you enable CORS?";
+        }
+    }
+</script>
+
+</body>
+</html>
